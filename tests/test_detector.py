@@ -40,6 +40,32 @@ class PIIDetectorTests(unittest.TestCase):
         kinds = {m.entity_type for m in matches}
         self.assertNotIn("IBAN", kinds)
 
+    def test_detects_five_valid_french_addresses(self) -> None:
+        text = (
+            "1) 12 rue de la Paix, 75002 Paris\n"
+            "2) 8 avenue Victor Hugo 75016 Paris\n"
+            "3) 45 bd Saint-Germain 75005 Paris\n"
+            "4) 3 impasse des Lilas, 33000 Bordeaux\n"
+            "5) 120 route de Lyon 13008 Marseille"
+        )
+        matches = [m for m in self.detector.detect(text) if m.entity_type == "ADDRESS_FR"]
+        self.assertEqual(5, len(matches))
+
+    def test_does_not_detect_incomplete_address_patterns(self) -> None:
+        text = (
+            "Adresse incomplete: 12 rue des Idees.\n"
+            "Code postal seul: 75002.\n"
+            "Ville seule: Paris."
+        )
+        kinds = {m.entity_type for m in self.detector.detect(text)}
+        self.assertNotIn("ADDRESS_FR", kinds)
+
+    def test_anonymize_replaces_address(self) -> None:
+        text = "Retrouvez-nous au 12 rue de la Paix, 75002 Paris."
+        result = self.detector.anonymize(text)
+        self.assertIn("[ADRESSE]", result)
+        self.assertNotIn("12 rue de la Paix, 75002 Paris", result)
+
 
 if __name__ == "__main__":
     unittest.main()

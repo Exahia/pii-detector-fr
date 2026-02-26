@@ -99,6 +99,16 @@ RULES: tuple[_PatternRule, ...] = (
         validator=_phone_fr_valid,
     ),
     _PatternRule(
+        entity_type="ADDRESS_FR",
+        regex=re.compile(
+            r"\b\d{1,4}\s*(?:bis|ter|quater)?\s+"
+            r"(?:rue|avenue|av\.?|boulevard|bd\.?|chemin|impasse|allee|all[ée]e|route|place|quai)\s+"
+            r"[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,},?\s+\d{5}\s+[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,}\b",
+            flags=re.IGNORECASE,
+        ),
+        replacement="[ADRESSE]",
+    ),
+    _PatternRule(
         entity_type="IBAN",
         regex=re.compile(r"\bFR\d{2}(?:\s?\d{4}){5}\s?\d{3}\b", flags=re.IGNORECASE),
         replacement="[IBAN]",
@@ -197,4 +207,3 @@ class PIIDetector:
             placeholder = replacements.get(match.entity_type, "[PII]")
             redacted = redacted[: match.start] + placeholder + redacted[match.end :]
         return redacted
-

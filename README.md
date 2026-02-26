@@ -9,6 +9,7 @@ Detect and anonymize French PII (RGPD-sensitive data) with a lightweight Python 
 - French-oriented detection for:
   - email
   - phone numbers
+  - French postal addresses
   - IBAN
   - NIR (numero de securite sociale)
   - SIREN / SIRET
@@ -34,13 +35,13 @@ from pii_detector import PIIDetector
 
 detector = PIIDetector(language="fr")
 
-text = "Contact: marie.dupont@example.fr et +33 6 12 34 56 78"
+text = "Contact: marie.dupont@example.fr, +33 6 12 34 56 78, 12 rue de la Paix, 75002 Paris"
 
 for match in detector.detect(text):
     print(match.entity_type, match.text, match.start, match.end)
 
 print(detector.anonymize(text))
-# Contact: [EMAIL] et [TELEPHONE]
+# Contact: [EMAIL], [TELEPHONE], [ADRESSE]
 ```
 
 ## CLI Usage
