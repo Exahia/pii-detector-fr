@@ -1,46 +1,46 @@
-# Contribuer à pii-detector-fr
+# Contributing to pii-detector-fr
 
-Merci de votre intérêt pour ce projet ! Voici comment contribuer.
+## Setup
 
-## Signaler un bug
+```bash
+git clone https://github.com/Exahia/pii-detector-fr.git
+cd pii-detector-fr
+python -m pip install -e .
+```
 
-Ouvrez une [issue GitHub](https://github.com/Exahia/pii-detector-fr/issues) en décrivant :
-- Le comportement observé
-- Le comportement attendu
-- Un exemple de texte reproduisant le problème (sans données personnelles réelles)
+## Quality Checks
 
-## Proposer une amélioration
+Run tests before opening a PR:
 
-1. Ouvrez une issue pour discuter de la fonctionnalité avant de coder
-2. Obtenez un accord de l'équipe Exahia
-3. Soumettez une Pull Request
+```bash
+python -m unittest discover -s tests -p "test_*.py"
+```
 
-## Processus de Pull Request
+## How to Propose Changes
 
-1. Forkez le repo
-2. Créez une branche : `git checkout -b feat/ma-fonctionnalite`
-3. Committez vos changements : `git commit -m "feat: description courte"`
-4. Pushez : `git push origin feat/ma-fonctionnalite`
-5. Ouvrez une Pull Request sur `main`
+1. Open an issue describing the bug/feature.
+2. Create a branch from `main`.
+3. Add tests with your change.
+4. Open a pull request with:
+   - context
+   - implementation details
+   - before/after behavior
 
-## Standards de code
+## Scope for Contributions
 
-- **Python** : PEP8, formatage avec `black`
-- **Tests** : Toute nouvelle entité détectée doit être couverte par des tests
-- **Documentation** : Mettre à jour le README si nécessaire
-- **Langue** : Commentaires et PR en français ou anglais
+- New French PII patterns
+- False-positive reduction
+- Better anonymization policies
+- Performance improvements
+- Dataset and evaluation tooling
 
-## Ajouter un nouveau type d'entité
+## Guidelines
 
-Pour ajouter la détection d'un nouveau type de PII français :
+- Keep runtime dependency-light when possible.
+- Do not commit real personal data in tests or examples.
+- Prefer deterministic behavior over hidden heuristics.
 
-1. Créer un reconnaisseur dans `pii_detector/recognizers/`
-2. L'enregistrer dans `pii_detector/registry.py`
-3. Ajouter des tests dans `tests/`
-4. Documenter l'entité dans le README
+## Security
 
-## Contact
-
-Pour toute question : [admin@exahia.ia](mailto:admin@exahia.ia)
-
-Projet maintenu par [Exahia](https://exahia.com).
+Do not open public issues with sensitive production data.
+If needed, contact: admin@exahia.ia

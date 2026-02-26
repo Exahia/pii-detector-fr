@@ -1,7 +1,24 @@
-"""Exemple d'utilisation basique de PII Detector FR."""
+"""Basic usage example for pii-detector-fr."""
 
-# Note : Ce module est en cours de développement.
-# Consultez le README pour la documentation complète.
+from pii_detector import PIIDetector
 
-print("PII Detector FR v0.1.0")
-print("Documentation : https://github.com/Exahia/pii-detector-fr")
+
+def main() -> None:
+    detector = PIIDetector(language="fr")
+
+    text = (
+        "Bonjour, je suis Jean Dupont. "
+        "Mon email est jean.dupont@entreprise.fr, "
+        "mon téléphone est 06 12 34 56 78 et mon IBAN FR76 3000 6000 0112 3456 7890 189."
+    )
+
+    print("=== Detections ===")
+    for match in detector.detect(text):
+        print(f"{match.entity_type}: {match.text} ({match.start}:{match.end})")
+
+    print("\n=== Anonymized ===")
+    print(detector.anonymize(text))
+
+
+if __name__ == "__main__":
+    main()

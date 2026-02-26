@@ -1,3 +1,6 @@
 """PII Detector FR — Détection de données personnelles françaises."""
 
-__version__ = "0.1.0"
+from .detector import PIIDetector, PIIMatch
+
+__all__ = ["PIIDetector", "PIIMatch"]
+__version__ = "0.2.0"
