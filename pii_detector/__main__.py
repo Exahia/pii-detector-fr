@@ -42,6 +42,17 @@ def _build_parser() -> argparse.ArgumentParser:
     anon_parser = subparsers.add_parser("anonymize", help="Return redacted text.")
     anon_parser.add_argument("--text", help="Inline text to anonymize.")
     anon_parser.add_argument("--file", help="Path of a text file to anonymize.")
+    anon_parser.add_argument(
+        "--strategy",
+        choices=["placeholder", "hash"],
+        default="placeholder",
+        help="Anonymization strategy.",
+    )
+    anon_parser.add_argument(
+        "--hash-key",
+        default="pii-detector-fr",
+        help="Hash key used when --strategy hash is selected.",
+    )
 
     return parser
 
@@ -67,7 +78,13 @@ def main() -> int:
         return 0
 
     if args.command == "anonymize":
-        print(detector.anonymize(input_text))
+        print(
+            detector.anonymize(
+                input_text,
+                strategy=args.strategy,
+                hash_key=args.hash_key,
+            )
+        )
         return 0
 
     parser.error(f"Unknown command: {args.command}")

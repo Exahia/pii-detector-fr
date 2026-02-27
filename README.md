@@ -17,6 +17,7 @@ Detect and anonymize French PII (RGPD-sensitive data) with a lightweight Python 
   - French license plates
   - dates (`dd/mm/yyyy`)
 - Deterministic anonymization with placeholders (`[EMAIL]`, `[IBAN]`, etc.)
+- Optional deterministic hash pseudonymization (`[EMAIL#d41d8cd98f00]`)
 - No mandatory runtime dependency (stdlib only)
 - CLI for quick scans and pipelines
 
@@ -42,6 +43,9 @@ for match in detector.detect(text):
 
 print(detector.anonymize(text))
 # Contact: [EMAIL], [TELEPHONE], [ADRESSE]
+
+print(detector.anonymize(text, strategy="hash", hash_key="my-org-key"))
+# Contact: [EMAIL#...], [PHONE_NUMBER#...], [ADDRESS_FR#...]
 ```
 
 ## CLI Usage
@@ -56,6 +60,12 @@ Anonymize a file:
 
 ```bash
 pii-detector anonymize --file ./document.txt
+```
+
+Hash pseudonymization mode:
+
+```bash
+pii-detector anonymize --file ./document.txt --strategy hash --hash-key "my-org-key"
 ```
 
 Pipe via stdin:

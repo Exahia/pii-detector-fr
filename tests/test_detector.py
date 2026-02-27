@@ -66,6 +66,29 @@ class PIIDetectorTests(unittest.TestCase):
         self.assertIn("[ADRESSE]", result)
         self.assertNotIn("12 rue de la Paix, 75002 Paris", result)
 
+    def test_hash_strategy_is_deterministic(self) -> None:
+        text = "Email: contact@exemple.fr, encore contact@exemple.fr"
+        first = self.detector.anonymize(text, strategy="hash")
+        second = self.detector.anonymize(text, strategy="hash")
+        self.assertEqual(first, second)
+        self.assertNotIn("contact@exemple.fr", first)
+        self.assertRegex(first, r"\[EMAIL#[0-9a-f]{12}\]")
+
+    def test_hash_strategy_distinguishes_values(self) -> None:
+        first = self.detector.anonymize("a@exemple.fr", strategy="hash")
+        second = self.detector.anonymize("b@exemple.fr", strategy="hash")
+        self.assertNotEqual(first, second)
+
+    def test_hash_strategy_uses_hash_key(self) -> None:
+        text = "contact@exemple.fr"
+        first = self.detector.anonymize(text, strategy="hash", hash_key="key-one")
+        second = self.detector.anonymize(text, strategy="hash", hash_key="key-two")
+        self.assertNotEqual(first, second)
+
+    def test_invalid_strategy_raises(self) -> None:
+        with self.assertRaises(ValueError):
+            self.detector.anonymize("test", strategy="unknown")
+
 
 if __name__ == "__main__":
     unittest.main()
