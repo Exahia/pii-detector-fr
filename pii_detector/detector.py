@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+import hashlib
 import re
 from typing import Callable, Iterable, Optional
 
@@ -196,14 +197,26 @@ class PIIDetector:
                 )
         return _resolve_overlaps(candidates)
 
-    def anonymize(self, text: str) -> str:
-        """Replace detected entities with stable placeholders."""
+    def anonymize(
+        self,
+        text: str,
+        strategy: str = "placeholder",
+        hash_key: str = "pii-detector-fr",
+    ) -> str:
+        """Replace detected entities with placeholders or hashed pseudonyms."""
+        if strategy not in {"placeholder", "hash"}:
+            raise ValueError("strategy must be one of: placeholder, hash")
         matches = self.detect(text)
         if not matches:
             return text
         replacements = {rule.entity_type: rule.replacement for rule in self.rules}
         redacted = text
         for match in reversed(matches):
-            placeholder = replacements.get(match.entity_type, "[PII]")
-            redacted = redacted[: match.start] + placeholder + redacted[match.end :]
+            if strategy == "placeholder":
+                replacement = replacements.get(match.entity_type, "[PII]")
+            else:
+                seed = f"{hash_key}\0{match.entity_type}\0{match.text}"
+                digest = hashlib.sha256(seed.encode("utf-8")).hexdigest()[:12]
+                replacement = f"[{match.entity_type}#{digest}]"
+            redacted = redacted[: match.start] + replacement + redacted[match.end :]
         return redacted
