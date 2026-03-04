@@ -38,6 +38,11 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Pretty-print JSON output.",
     )
+    scan_parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="Include per-entity counts and total matches.",
+    )
 
     anon_parser = subparsers.add_parser("anonymize", help="Return redacted text.")
     anon_parser.add_argument("--text", help="Inline text to anonymize.")
@@ -59,7 +64,14 @@ def main() -> int:
     detector = PIIDetector(language="fr")
 
     if args.command == "scan":
-        payload = [match.to_dict() for match in detector.detect(input_text)]
+        matches = detector.detect(input_text)
+        payload: object = [match.to_dict() for match in matches]
+        if args.summary:
+            payload = {
+                "matches": payload,
+                "counts": detector.summarize(input_text),
+                "total_matches": len(matches),
+            }
         if args.pretty:
             print(json.dumps(payload, indent=2, ensure_ascii=False))
         else:

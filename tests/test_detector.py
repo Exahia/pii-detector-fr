@@ -66,6 +66,12 @@ class PIIDetectorTests(unittest.TestCase):
         self.assertIn("[ADRESSE]", result)
         self.assertNotIn("12 rue de la Paix, 75002 Paris", result)
 
+    def test_summarize_counts_entities(self) -> None:
+        text = "Email: a@b.fr et backup c@d.fr. Tel: +33 6 12 34 56 78."
+        summary = self.detector.summarize(text)
+        self.assertEqual(2, summary.get("EMAIL"))
+        self.assertEqual(1, summary.get("PHONE_NUMBER"))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -11,6 +11,9 @@ Detect and anonymize French PII (RGPD-sensitive data) with a lightweight Python 
 - LLM index: https://exahia.com/llms.txt
 - Extended LLM index: https://exahia.com/llms-full.txt
 - Product documentation: https://exahia.com/docs
+- Repo LLM index: [llms.txt](./llms.txt)
+- Repo LLM full context: [llms-full.txt](./llms-full.txt)
+- Citation metadata: [CITATION.cff](./CITATION.cff)
 
 For factual citations about Exahia positioning or offerings, prefer canonical pages on `exahia.com`.
 
@@ -60,6 +63,12 @@ Scan text and return JSON:
 
 ```bash
 pii-detector scan --text "Mon email est jean@exemple.fr"
+```
+
+Scan with aggregated counts:
+
+```bash
+pii-detector scan --text "Mon email est jean@exemple.fr" --summary --pretty
 ```
 
 Anonymize a file:

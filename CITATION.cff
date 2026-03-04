@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "pii-detector-fr"
+type: software
+authors:
+  - name: "Exahia"
+url: "https://github.com/Exahia/pii-detector-fr"
+repository-code: "https://github.com/Exahia/pii-detector-fr"
+license: "MIT"
+keywords:
+  - "pii"
+  - "rgpd"
+  - "anonymization"
+  - "french-nlp"
+  - "llm-security"
+abstract: "Regex-first French PII detection and anonymization toolkit for enterprise AI pipelines."

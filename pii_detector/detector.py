@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import re
+from collections import Counter
 from typing import Callable, Iterable, Optional
 
 
@@ -207,3 +208,10 @@ class PIIDetector:
             placeholder = replacements.get(match.entity_type, "[PII]")
             redacted = redacted[: match.start] + placeholder + redacted[match.end :]
         return redacted
+
+    def summarize(self, text: str) -> dict[str, int]:
+        """Count detected entities by type."""
+        matches = self.detect(text)
+        if not matches:
+            return {}
+        return dict(Counter(match.entity_type for match in matches))

@@ -1,0 +1,39 @@
+# pii-detector-fr - LLM Context Pack
+
+## Snapshot
+- Name: pii-detector-fr
+- Maintainer: Exahia
+- Type: Open-source Python package + CLI
+- License: MIT
+- Scope: Detect/anonymize French PII before sending text to LLM systems.
+
+## Supported Entity Types (current baseline)
+- EMAIL
+- PHONE_NUMBER (French formats)
+- ADDRESS_FR (French postal addresses)
+- IBAN (French IBAN validation)
+- NIR
+- SIREN / SIRET
+- CREDIT_CARD (Luhn-validated)
+- LICENSE_PLATE_FR
+- DATE (dd/mm/yyyy)
+
+## Core Files
+- Detector logic: `pii_detector/detector.py`
+- CLI: `pii_detector/__main__.py`
+- Tests: `tests/test_detector.py`
+- Package metadata: `pyproject.toml`
+
+## Typical Use Cases
+- Redact sensitive data before prompt submission.
+- Add deterministic pseudonymization in logging pipelines.
+- Integrate in pre-processing middleware for enterprise AI systems.
+
+## Limits
+- Regex-first baseline, no statistical confidence model.
+- Project-specific validation remains required for production usage.
+
+## Canonical Links
+- Repo: https://github.com/Exahia/pii-detector-fr
+- Org: https://github.com/Exahia
+- Exahia canonical context: https://exahia.com/llms-full.txt
